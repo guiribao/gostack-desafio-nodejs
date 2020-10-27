@@ -16,11 +16,11 @@ app.get("/repositories", (request, response) => {
 
 app.post("/repositories", (request, response) => {
   const { title, url, techs } = request.body;
-  const repositorie = { id: uuid(), title, url, techs, like: 0 };
+  const repositorie = { id: uuid(), title, url, techs, likes: 0 };
   
   repositories.push(repositorie);
 
-  return response.json(repositorie);
+  return response.send(201).json(repositorie);
 });
 
 app.put("/repositories/:id", (request, response) => {
@@ -71,7 +71,7 @@ app.post("/repositories/:id/like", (request, response) => {
 
   const repositorie = {
     ...repositories[repositorieIndex],
-    like: repositories[repositorieIndex].like+1,
+    likes: repositories[repositorieIndex].like+1,
   };
 
   repositories[repositorieIndex] = repositorie
