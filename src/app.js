@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 
-const { v4: uuid } = require('uuid');
+const { uuid } = require("uuidv4");
 
 const app = express();
 
@@ -16,11 +16,11 @@ app.get("/repositories", (request, response) => {
 
 app.post("/repositories", (request, response) => {
   const { title, url, techs } = request.body;
-  const repositorie = { id: uuid(), title, url, techs, likes: 0 };
+  const repositorie = { id: uuid(), url, title, techs, likes: 0 };
   
   repositories.push(repositorie);
 
-  return response.send(201).json(repositorie);
+  return response.json(repositorie);
 });
 
 app.put("/repositories/:id", (request, response) => {
@@ -33,11 +33,11 @@ app.put("/repositories/:id", (request, response) => {
   }
 
   const repositorie = {
-    ...repositories[repositorieIndex],
     id,
-    title,
     url,
+    title,
     techs,
+    liked: repositories[repositorieIndex].liked,
   };
   
   repositories[repositorieIndex] = repositorie
@@ -71,12 +71,12 @@ app.post("/repositories/:id/like", (request, response) => {
 
   const repositorie = {
     ...repositories[repositorieIndex],
-    likes: repositories[repositorieIndex].like+1,
+    likes: repositories[repositorieIndex].likes+1,
   };
 
   repositories[repositorieIndex] = repositorie
   
-  return response.status(201).json(repositorie)
+  return response.json(repositorie)
 });
 
 module.exports = app;
